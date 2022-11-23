@@ -1,0 +1,27 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-image: url("img/background.gif");
+
+}
+@font-face{
+  font-family: "games";
+  src: url('font/Games-Italic.ttf');
+  src: url('font/Games.ttf');
+}
+h1 {
+  color: blueviolet;
+  font-size: 90px;
+  font-family: games;
+}
+h2 {
+  color: blueviolet;
+  font-size: 60px;
+  font-family: monospace;
+
+}
+canvas {
+  display: none;
+}
