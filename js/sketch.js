@@ -4,6 +4,6 @@ function setup() {
 }
 
 function draw() {
-  background(220, 141, 155); //cor
+  background(0, 0, 0); //cor
 }
 

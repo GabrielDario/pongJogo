@@ -3,20 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
     <title>Pong</title>
 
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/sketch.js"></script>
 
+    <!-- Para rodar o j5 -->
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
   </head>
 
   <body>
-    <script src="sketch.js"></script>
+    
     <h1>Jogo Pong</h1>
     <h2>Jogar</h3>
-    <h2>Como Jogar</h2>
-    <h2>Quem somos</h2>
+
+    <h2 id="myBtn">Como Jogar</h2>
+    <h2 id="btn2">Quem somos</h2>
+
+   
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<p>Some text in the Modal..</p>
+		</div>
+
+	</div>
   </body>
 </html>

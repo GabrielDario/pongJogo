@@ -3,13 +3,14 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  background-image: url("img/background.gif");
+  background-image: url("../img/background.gif");
+  cursor:  url("../img/cursor.cur") , default;
 
 }
 @font-face{
   font-family: "games";
-  src: url('font/Games-Italic.ttf');
-  src: url('font/Games.ttf');
+  src: url('../font/Games-Italic.ttf');
+  src: url('../font/Games.ttf');
 }
 h1 {
   color: blueviolet;
@@ -20,7 +21,7 @@ h2 {
   color: blueviolet;
   font-size: 60px;
   font-family: monospace;
-
+  cursor:  url("../img/pointer.cur") , pointer;
 }
 canvas {
   display: none;
