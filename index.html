@@ -11,17 +11,15 @@
     integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <script src="js/sketch.js"></script>
+  
 
-  <!-- Para rodar o j5 -->
-  <script src="libraries/p5.min.js"></script>
-  <script src="libraries/p5.sound.min.js"></script>
+
 </head>
 
 <body>
 
   <h1>Jogo Pong</h1>
-  <h2>Jogar</h3>
+  <h2 ><a href="pong.html" class="jogar">Jogar</a></h3>
 
   <!-- Modal  para como jogar-->
     <button type="button" class="fundo" data-bs-toggle="modal" data-bs-target="#comoJogar">
@@ -36,7 +34,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h2 class="modal-title fs-5" id="exampleModalLabel">E só jogar</h2>
+            <h2 class="modal-title fs-5" id="exampleModalLabel">
+              Player 1 - (W)para subir e (S)para descer <br>
+              Player 2 - (⬆)para subir e (⬇)para descer <br>
+              Objetivo defender a bola e não deixar a bola passar
+            </h2>
           </div>
         </div>
       </div>
@@ -55,7 +57,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <h2 class="modal-title fs-5" id="exampleModalLabel">Somos nós</h2>
+            <h2 class="modal-title fs-5" id="exampleModalLabel">
+              Gabriel Dario e Diego Patzlaff <br>
+              Curso Senai - Desenvolvimento de Sistemas <br>
+              Professor: Rodrigo Farias<br>
+            Primeira Fase - Projeto Final <br>
+          Matéria: Lógica de programação</h2>
           </div>
         </div>
       </div>
@@ -65,6 +72,6 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-<script src="../pokedex novo/pokedex.js"></script>
+
 
 </html>

@@ -12,6 +12,10 @@ body {
   src: url('../font/Games-Italic.ttf');
   src: url('../font/Games.ttf');
 }
+a.jogar {
+  color: blueviolet;
+  text-decoration: none;
+}
 h1 {
   color: blueviolet;
   font-size: 90px;
@@ -24,8 +28,13 @@ h2 {
   cursor:  url("../img/pointer.cur") , pointer;
 }
 canvas {
-  display: none;
+  display: block;
 }
 button {
   background: transparent;
+}
+
+canvas {
+  width: 90%;
+  height: 90%;
 }
