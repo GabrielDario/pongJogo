@@ -1,4 +1,5 @@
 #close {
     position: absolute;
     width: 40px;
+    margin-left: -500px;
 }
