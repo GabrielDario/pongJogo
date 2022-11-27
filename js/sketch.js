@@ -6,6 +6,10 @@ var pincel = canvas.getContext("2d");
 let bolinhaX = 250;
 let bolinhaY = 250;
 
+// placar
+let pontoA = 0;
+let pontoB = 0;
+
 let diferenca; //diferenca dos angulos quando rebate
 let bolinhaParaFrente = true; //se vai decrementando ou diminuindo Eixo X
 let bolinhaParaCima = true; //se vai decrementando ou diminuindo Eixo Y
@@ -18,7 +22,7 @@ let yRaquete = 200;
 
 //raquete 2
 let xRaquete2 = 475;
-let yRaquete2 = 200;
+let yRaquete2 = 300;
 
 let taxa = 25; //nao sei o que faz
 
@@ -30,9 +34,11 @@ var s = 83;
 
 // Sons
 let rebater = new Audio('sons/rebater.wav');
-let gol = new Audio('sons/gol.mp3');
+let gol = new Audio('sons/goal.wav');
+let game = new Audio('sons/game.wav');
 // função que desenha o grid.
-function limpaTela() {
+
+function limparTela() {
   var descer = 0;
   while (descer <= 500) {
     for (var imp = 0; imp <= 500; imp = imp + 25) {
@@ -47,6 +53,7 @@ function limpaTela() {
     descer = descer + 25;
   }
 }
+
 function desenharCampo() {
   //Meio do campo
   pincel.fillStyle = 'green';
@@ -71,7 +78,7 @@ function desenharCampo() {
 }
 
 // função que cria a bolinha
-function desenhaCirculo(raio) {
+function desenharCirculo(raio) {
   pincel.fillStyle = 'white';
   pincel.beginPath();// começa a pintar
 
@@ -113,7 +120,7 @@ function desenhaCirculo(raio) {
   pincel.fill();
 }
 // função a raquete esqueda
-function desenhaRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete) {
+function desenharRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete) {
 
   pincel.fillStyle = 'white';
   pincel.beginPath();
@@ -121,18 +128,20 @@ function desenhaRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete) {
   pincel.fill();
 }
 // função a raquete direita
-function desenhaRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2) {
+function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2) {
 
   pincel.fillStyle = 'white';
   pincel.beginPath();
   pincel.rect(xRaquete2, yRaquete2, larguraRaquete1, alturaRaquete1);
   pincel.fill();
 }
-function verificaColisaoRaquete1() {
+function verificarColisaoRaquete1() {
+ 
   if (bolinhaX == 35) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete;
     if (bolinhaY >= yRaquete && diferenca >= 0 && diferenca <= 150) {
       rebater.play();
+    
       verificarAngulo1();
     }
   }
@@ -140,13 +149,13 @@ function verificaColisaoRaquete1() {
 }
 
 
-function verificaColisaoRaquete2() {
+function verificarColisaoRaquete2() {
   if (bolinhaX == 465) { //bolinha na raquete 1
-    console.log("raquete2: " + yRaquete2);
-    console.log("bolinha: " + bolinhaY);
+
     diferenca = bolinhaY - yRaquete2;
     if (bolinhaY >= yRaquete2 && diferenca >= 0 && diferenca <= 150) {
       rebater.play();
+   
       verificarAngulo2();
     }
   }
@@ -176,26 +185,40 @@ function verificarAngulo2() {
 }
 
 function verificarGol() {
-  console.log(bolinhaX)
-  if(bolinhaX == 0 || bolinhaX == 495) {
+
+  if(bolinhaX == 0) {
     gol.play();
+    
+    pontoB = pontoB + 1;
+  }
+  if(bolinhaX == 500) {
+    gol.play();
+ 
+    pontoA = pontoA + 1;
   }
 }
+function criarPlacar() {
+  pincel.font = '48px serif';
+  pincel.fillText(pontoA, 200, 50);
+  pincel.fillText(pontoB, 275, 50);
+  pincel.fill();
+}
+function atualizarTelar() {
 
-function atualizaTela() {
-  
-  limpaTela();
+  limparTela();
   desenharCampo();
-  desenhaCirculo(10);
-  desenhaRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete);
-  desenhaRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2);
-  verificaColisaoRaquete1();
-  verificaColisaoRaquete2();
-   verificarGol();
+  desenharCirculo(10);
+  desenharRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete);
+  desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2);
+  
+  verificarColisaoRaquete1();
+  verificarColisaoRaquete2();
+  criarPlacar();
+  verificarGol();
 }
 
 function leDoTeclado(evento) {
-
+  game.play();
   if (evento.keyCode == cima && yRaquete2 - taxa >= 0) {
     yRaquete2 = yRaquete2 - taxa;
 
@@ -211,11 +234,16 @@ function leDoTeclado(evento) {
 
   }
 }
-
+function teste() {
+  console.log("BONUSS");
+  
+  game.play();
+}
 
 document.onkeydown = leDoTeclado;
 
-setInterval(atualizaTela, 50);
+setInterval(atualizarTelar, 50);;
+setInterval(teste, 10000); // bonus a cada 10 segundos
 
 
 
