@@ -6,6 +6,8 @@ var pincel = canvas.getContext("2d");
 let bolinhaX = 250;
 let bolinhaY = 250;
 let raioBola = 5;
+let velocidadeBolinha = 1;
+let bolinhaReto = false;
 
 // placar
 let pontoA = 0;
@@ -14,6 +16,7 @@ let pontoB = 0;
 let diferenca; //diferenca dos angulos quando rebate
 let bolinhaParaFrente = true; //se vai decrementando ou diminuindo Eixo X
 let bolinhaParaCima = true; //se vai decrementando ou diminuindo Eixo Y
+
 
 //ValorES da raquete 1 - Altura e largura
 let larguraRaquete1 = 10;
@@ -44,12 +47,12 @@ function limparTela() {
   while (descer <= 500) {
     for (var imp = 0; imp <= 500; imp = imp + 25) {
       pincel.fillStyle = "black";
-      //pincel.strokeStyle = "blue";
+      pincel.strokeStyle = "blue";
       pincel.beginPath();
       pincel.rect(imp, descer, 25, 25);
       pincel.closePath();
       pincel.fill();
-      //  pincel.stroke();
+      pincel.stroke();
     }
     descer = descer + 25;
   }
@@ -83,9 +86,9 @@ function desenharCirculo() {
   pincel.fillStyle = 'white';
   pincel.beginPath();// começa a pintar
 
-
   // EIXO X
   //Verifica colisão no eixo X - entre 0 e 500
+
   if (bolinhaX >= 500) {
     bolinhaParaFrente = false;
   }
@@ -94,12 +97,22 @@ function desenharCirculo() {
   }
   // Se for verdadeiro,ele vai somando - EIXO X
   if (bolinhaParaFrente == true) {
-    bolinhaX = bolinhaX + 5;
+    bolinhaX = bolinhaX + velocidadeBolinha;
+
     // Se não for verdadeiro,ele vai decrementando - EIXO X
   } else {
-    bolinhaX = bolinhaX - 5;
+    bolinhaX = bolinhaX - velocidadeBolinha;
   }
-
+  if (bolinhaReto == true && bolinhaParaFrente == false) {
+    console.log("RETO COM com direita")
+    bolinhaX = bolinhaX - velocidadeBolinha;
+    bolinhaY = bolinhaY + 0;
+  }
+  if (bolinhaReto == true && bolinhaParaFrente == true) {
+    console.log("RETO da esquerda")
+    bolinhaX = bolinhaX + velocidadeBolinha;
+    bolinhaY = 0;
+  }
   // EIXO Y
   //Verifica colisão no eixo Y - entre 0 e 500
   if (bolinhaY >= 500) {
@@ -110,11 +123,14 @@ function desenharCirculo() {
   }
   // Se for verdadeiro,ele vai somando - EIXO Y
   if (bolinhaParaCima == true) {
-    bolinhaY = bolinhaY + 5;
+
+    bolinhaY = bolinhaY + velocidadeBolinha;
+
     // Se não for verdadeiro,ele vai decrementando - EIXO Y
   } else {
-    bolinhaY = bolinhaY - 5;
+    bolinhaY = bolinhaY - velocidadeBolinha;
   }
+
 
   //pinta a bolinha
   pincel.arc(bolinhaX, bolinhaY, raioBola, 0, 2 * Math.PI);
@@ -138,25 +154,22 @@ function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2)
 }
 function verificarColisaoRaquete1() {
 
-  if (bolinhaX == 35) { //bolinha na raquete 1
+  if (bolinhaX >= 34 && bolinhaX <= 36) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete;
-
-    if (bolinhaY >= yRaquete && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
+    console.log(diferenca)
+    if (bolinhaY + 105 >= yRaquete && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
       rebater.play();
-   
+
       verificarAngulo1();
     }
   }
 
 }
-
-
 function verificarColisaoRaquete2() {
-  if (bolinhaX == 465) { //bolinha na raquete 1
-
+  if (bolinhaX >= 464 && bolinhaX <= 466) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete2;
-    console.log(diferenca)
-    if (bolinhaY >= yRaquete2 && diferenca >= 0 && diferenca <= alturaRaquete1 + 15) {
+
+    if (bolinhaY + 105 >= yRaquete2 && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
       rebater.play();
 
       verificarAngulo2();
@@ -168,38 +181,86 @@ function verificarColisaoRaquete2() {
 //se pegar mais pra cima da raquete,bola vai para cima (primeiros 75 pixels)
 //se pegar mais pra cima da raquete,bola vai para cima (dos 76 pixels até o 150 px)
 function verificarAngulo1() {
-  
-  if (diferenca >= -15 && diferenca <= 50) {
+ 
+  console.log("esquerda: " + diferenca);
+  if (diferenca >= -15 && diferenca <= 11) {  // aumenta velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
-  } else if (diferenca > 50 && diferenca <= alturaRaquete1 + 15) {
+    bolinhaReto = false;
+    velocidadeBolinha = velocidadeBolinha * 2;
+    console.log("x2");
+    bolinhaReto = false;
+  } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
+    bolinhaParaFrente = true;
+    bolinhaParaCima = false;
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
+  } else if (diferenca > 37 && diferenca <= 63) { // retoo
+    bolinhaParaFrente = false;
+    bolinhaParaCima = true;
+    bolinhaReto = true;
+    console.log("Retoo!!");
+
+  } else if (diferenca > 63 && diferenca <= 89) {// regula velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
+  } else if (diferenca > 89 && diferenca <= alturaRaquete1 + 15) {// aumenta velocidade
+    bolinhaParaFrente = true;
+    bolinhaParaCima = true;
+    velocidadeBolinha = velocidadeBolinha * 2;
+    console.log("x2");
+    bolinhaReto = false;
   }
 }
 
 function verificarAngulo2() {
-  if (diferenca >= 0 && diferenca <= 50) {
+  console.log("direita: " + diferenca);
+  if (diferenca >= -15 && diferenca <= 11) {  // aumenta velocidade
     bolinhaParaFrente = false;
     bolinhaParaCima = false;
-
-  } else if (diferenca > 50 && diferenca <= alturaRaquete1 + 15) {
+    velocidadeBolinha = velocidadeBolinha * 2;
+    console.log("x2");
+    bolinhaReto = false;
+  } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
+    bolinhaParaFrente = false;
+    bolinhaParaCima = false;
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
+  } else if (diferenca > 37 && diferenca <= 63) { // retoo
     bolinhaParaFrente = false;
     bolinhaParaCima = true;
+    bolinhaReto = true;
+    console.log("Retoo!!");
 
+  } else if (diferenca > 63 && diferenca <= 89) {// regula velocidade
+    bolinhaParaFrente = false;
+    bolinhaParaCima = true;
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
+  } else if (diferenca > 89 && diferenca <= alturaRaquete1 + 15) {// aumenta velocidade
+    bolinhaParaFrente = false;
+    bolinhaParaCima = true;
+    bolinhaReto = false;
+    velocidadeBolinha = velocidadeBolinha * 2;
+    console.log("x2");
   }
 }
 
 function verificarGol() {
 
-  if (bolinhaX == 0) {
-    gol.play();
 
+  if (bolinhaX <= 0) {
+    gol.play();
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
     pontoB = pontoB + 1;
   }
-  if (bolinhaX == 500) {
+  if (bolinhaX >= 500) {
     gol.play();
-
+    velocidadeBolinha = 5;
+    bolinhaReto = false;
     pontoA = pontoA + 1;
   }
 }
