@@ -6,16 +6,20 @@ canvas.width = canvasWidth;
 let canvasHeight = 400;
 canvas.height = canvasHeight;
 
-//ValorES da bolinha x e y
-let bolinhaX = canvasWidth/2;
-let bolinhaY = canvasHeight/2;
+//Valores da bolinha x e y
+let bolinhaX = canvasWidth / 2;
+let bolinhaY = canvasHeight / 2;
 let raioBola = 5;
 let velocidadeBolinha = 5;
 let bolinhaReto = false;
 
-// placar
+// Placar
 let pontoA = 0;
 let pontoB = 0;
+
+//Multiplicador
+let multiplicadorTela = 1;
+let multiplicador = 1.1;
 
 let diferenca; //diferenca dos angulos quando rebate
 let bolinhaParaFrente = true; //se vai decrementando ou diminuindo Eixo X
@@ -26,11 +30,11 @@ let bolinhaParaCima = true; //se vai decrementando ou diminuindo Eixo Y
 let larguraRaquete1 = 10;
 let alturaRaquete1 = 100;
 let xRaquete = 15; //CORDENADAS DA RAQUETE
-let yRaquete = (canvasHeight / 2 )- 50;
+let yRaquete = (canvasHeight / 2) - 50;
 
 //raquete 2
-let xRaquete2 = canvasWidth -25 ;
-let yRaquete2 = (canvasHeight / 2 )- 50;
+let xRaquete2 = canvasWidth - 25;
+let yRaquete2 = (canvasHeight / 2) - 50;
 
 let taxa = 10; //valocidade da raquete
 
@@ -66,19 +70,19 @@ function desenharCampo() {
   //Meio do campo
   pincel.fillStyle = 'green';
   pincel.beginPath();
-  pincel.rect((canvasWidth/2) - 5, 0, 10, canvasWidth);
+  pincel.rect((canvasWidth / 2) - 5, 0, 10, canvasWidth);
   pincel.fill();
 
   //Meio campo bola
   pincel.fillStyle = 'green';
   pincel.beginPath();
-  pincel.arc(canvasWidth/2, canvasHeight/2, 40, 0, 2 * Math.PI);
+  pincel.arc(canvasWidth / 2, canvasHeight / 2, 40, 0, 2 * Math.PI);
   pincel.fill();
 
   //Meio campo bola2
   pincel.fillStyle = 'white';
   pincel.beginPath();
-  pincel.arc(canvasWidth/2, canvasHeight/2, 10, 0, 2 * Math.PI);
+  pincel.arc(canvasWidth / 2, canvasHeight / 2, 10, 0, 2 * Math.PI);
   pincel.fill();
 
 
@@ -110,12 +114,12 @@ function desenharCirculo() {
   if (bolinhaReto == true && bolinhaParaFrente == false) {
     console.log("RETO COM com direita")
     bolinhaX = bolinhaX - velocidadeBolinha;
-    bolinhaY = bolinhaY + 0;
+
   }
   if (bolinhaReto == true && bolinhaParaFrente == true) {
     console.log("RETO da esquerda")
     bolinhaX = bolinhaX + velocidadeBolinha;
-    bolinhaY = 0;
+
   }
   // EIXO Y
   //Verifica colisão no eixo Y - entre 0 e 500
@@ -151,7 +155,7 @@ function desenharRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete) {
   pincel.beginPath();
   pincel.fillStyle = 'red';
   pincel.rect(xRaquete, yRaquete, 10, 10);
-  pincel.rect(xRaquete, yRaquete + 100, 10, 10);
+  pincel.rect(xRaquete, yRaquete + 90, 10, 10);
   pincel.fill();
 
   pincel.beginPath();
@@ -170,7 +174,7 @@ function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2)
   pincel.beginPath();
   pincel.fillStyle = 'red';
   pincel.rect(xRaquete2, yRaquete2, 10, 10);
-  pincel.rect(xRaquete2, yRaquete2 + 100, 10, 10);
+  pincel.rect(xRaquete2, yRaquete2 + 90, 10, 10);
   pincel.fill();
 
   pincel.beginPath();
@@ -180,7 +184,7 @@ function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2)
 }
 function verificarColisaoRaquete1() {
 
-  if (bolinhaX >= 34 && bolinhaX <= 36) { //bolinha na raquete 1
+  if (bolinhaX >= 30 && bolinhaX <= 40) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete;
     console.log(diferenca)
     if (bolinhaY + 105 >= yRaquete && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
@@ -192,9 +196,8 @@ function verificarColisaoRaquete1() {
 
 }
 function verificarColisaoRaquete2() {
-  if (bolinhaX >= 464 && bolinhaX <= 466) { //bolinha na raquete 1
+  if (bolinhaX >= canvasWidth - 40 && bolinhaX <= canvasWidth - 30) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete2;
-
     if (bolinhaY + 105 >= yRaquete2 && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
       rebater.play();
 
@@ -207,38 +210,51 @@ function verificarColisaoRaquete2() {
 //se pegar mais pra cima da raquete,bola vai para cima (primeiros 75 pixels)
 //se pegar mais pra cima da raquete,bola vai para cima (dos 76 pixels até o 150 px)
 function verificarAngulo1() {
- 
+
   console.log("esquerda: " + diferenca);
   if (diferenca >= -15 && diferenca <= 11) {  // aumenta velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
     bolinhaReto = false;
-    velocidadeBolinha = velocidadeBolinha * 2;
     console.log("x2");
-    bolinhaReto = false;
+    multiplicadorTela = multiplicadorTela + 1;
+
+    multiplicador = multiplicador + 0.2;
+    console.log(`Multuiplicador de ${multiplicador}`);
   } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
     velocidadeBolinha = 5;
     bolinhaReto = false;
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
+
   } else if (diferenca > 37 && diferenca <= 63) { // retoo
-    bolinhaParaFrente = false;
+    bolinhaParaFrente = true;
     bolinhaParaCima = true;
     bolinhaReto = true;
     console.log("Retoo!!");
+    multiplicadorTela = 1;
 
   } else if (diferenca > 63 && diferenca <= 89) {// regula velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
     velocidadeBolinha = 5;
     bolinhaReto = false;
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
   } else if (diferenca > 89 && diferenca <= alturaRaquete1 + 15) {// aumenta velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
-    velocidadeBolinha = velocidadeBolinha * 2;
-    console.log("x2");
     bolinhaReto = false;
+    console.log("x2");
+    multiplicadorTela = multiplicadorTela + 1;
+
+    multiplicador = multiplicador + 0.2;
+    console.log(`Multuiplicador de ${multiplicador}`);
+    
   }
+  console.log(`VELOCIDADE ${multiplicadorTela} =  ` + velocidadeBolinha);
 }
 
 function verificarAngulo2() {
@@ -246,14 +262,23 @@ function verificarAngulo2() {
   if (diferenca >= -15 && diferenca <= 11) {  // aumenta velocidade
     bolinhaParaFrente = false;
     bolinhaParaCima = false;
-    velocidadeBolinha = velocidadeBolinha * 2;
     console.log("x2");
+
+    multiplicadorTela = multiplicadorTela + 1;
+
+    multiplicador = multiplicador + 0.2;
+    console.log(`Multuiplicador de ${multiplicador}`);
+    velocidadeBolinha = velocidadeBolinha * multiplicador;
+  
     bolinhaReto = false;
   } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
     bolinhaParaFrente = false;
     bolinhaParaCima = false;
     velocidadeBolinha = 5;
     bolinhaReto = false;
+
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
   } else if (diferenca > 37 && diferenca <= 63) { // retoo
     bolinhaParaFrente = false;
     bolinhaParaCima = true;
@@ -265,37 +290,98 @@ function verificarAngulo2() {
     bolinhaParaCima = true;
     velocidadeBolinha = 5;
     bolinhaReto = false;
+
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
   } else if (diferenca > 89 && diferenca <= alturaRaquete1 + 15) {// aumenta velocidade
     bolinhaParaFrente = false;
     bolinhaParaCima = true;
     bolinhaReto = false;
-    velocidadeBolinha = velocidadeBolinha * 2;
-    console.log("x2");
+    velocidadeBolinha = velocidadeBolinha * multiplicador;
+   console.log("x2");
+    multiplicadorTela = multiplicadorTela + 1;
+
+    multiplicador = multiplicador + 0.2;
+    console.log(`Multuiplicador de ${multiplicador}`);
   }
+  console.log(`VELOCIDADE ${multiplicadorTela} =  ` + velocidadeBolinha);
 }
 
 function verificarGol() {
-
-
   if (bolinhaX <= 0) {
     gol.play();
     velocidadeBolinha = 5;
     bolinhaReto = false;
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
     pontoB = pontoB + 1;
   }
   if (bolinhaX >= canvasWidth) {
     gol.play();
     velocidadeBolinha = 5;
+    multiplicadorTela = 1;
+    multiplicador = 1.25;
     bolinhaReto = false;
     pontoA = pontoA + 1;
   }
 }
 function criarPlacar() {
   pincel.font = '48px serif';
-  pincel.fillText(pontoA, (canvasWidth/2) + 50, 50);
-  pincel.fillText(pontoB, (canvasWidth/2) - 50, 50);
+  pincel.fillStyle = "red";
+  pincel.fillText(pontoA, (canvasWidth / 2) + 25, 50);
+  pincel.fillText(pontoB, (canvasWidth / 2) - 50, 50);
   pincel.fill();
 }
+
+function atualizadHoras() {
+  pincel.font = '30px serif';
+  pincel.fontColor = "blue";
+  let agora = new Date();
+  let hora = agora.getHours().toString().padStart(2, '0');
+  let minutos = agora.getUTCMinutes().toString().padStart(2, '0');
+  let segundos = agora.getUTCSeconds().toString().padStart(2, '0');
+
+
+  pincel.fillText(hora + ":", canvasWidth - 120, 25);
+  pincel.fillText(minutos + ":", canvasWidth - 80, 25);
+  pincel.fillText(segundos + "", canvasWidth - 40, 25);
+  pincel.fill();
+}
+
+function verificarMultiplicador() {
+  pincel.beginPath();
+
+  pincel.font = '50px serif';
+  pincel.fillStyle = 'yellow';
+  pincel.fillText(`${multiplicadorTela} x`, canvasWidth - 75, 75);
+  pincel.fill();
+}
+
+
+function teste() {
+  //console.log("BONUS");
+}
+
+function leDoTeclado(evento) {
+  game.play();
+  if (evento.keyCode == cima && yRaquete2 - taxa >= 0) {
+    yRaquete2 = yRaquete2 - taxa;
+
+  } else if (evento.keyCode == baixo && canvasHeight <= 400 && yRaquete2 <= 290) {
+    yRaquete2 = yRaquete2 + taxa;
+
+  }
+  if (evento.keyCode == w && yRaquete - taxa >= 0) {
+    yRaquete = yRaquete - taxa;
+
+  } else if (evento.keyCode == s && canvasHeight <= 400 && yRaquete <= 290) {
+    console.log(yRaquete);
+    //console.log(taxa);
+    yRaquete = yRaquete + taxa;
+
+  }
+}
+
 function atualizarTelar() {
 
   limparTela();
@@ -309,43 +395,7 @@ function atualizarTelar() {
   criarPlacar();
   verificarGol();
   atualizadHoras();
-}
-
-function atualizadHoras() {
-  pincel.font = '30px serif';
-  pincel.fontColor = "blue";
-  let agora = new Date();
-  let hora = agora.getHours().toString().padStart(2, '0');
-  let minutos = agora.getUTCMinutes().toString().padStart(2, '0');
-  let segundos = agora.getUTCSeconds().toString().padStart(2, '0');
-
-
-  pincel.fillText(hora + ":", canvasWidth - 120, 50);
-  pincel.fillText(minutos + ":", canvasWidth - 80, 50);
-  pincel.fillText(segundos + "", canvasWidth - 40, 50);
-  pincel.fill();
-}
-function leDoTeclado(evento) {
-  game.play();
-  if (evento.keyCode == cima && yRaquete2 - taxa >= 0) {
-    yRaquete2 = yRaquete2 - taxa;
-
-  } else if (evento.keyCode == baixo && yRaquete2 + taxa <= 400) {
-    yRaquete2 = yRaquete2 + taxa;
-
-  }
-  if (evento.keyCode == w && yRaquete - taxa >= 0) {
-    yRaquete = yRaquete - taxa;
-
-  } else if (evento.keyCode == s && yRaquete + taxa <= 400) {
-    yRaquete = yRaquete + taxa;
-
-  }
-}
-function teste() {
-  //console.log("BONUS");
-
-
+  verificarMultiplicador();
 }
 
 document.onkeydown = leDoTeclado;
