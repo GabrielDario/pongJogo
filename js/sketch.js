@@ -1,14 +1,14 @@
 // Criando componente Canvas para dsenhos em 2D
 let canvas = document.querySelector("#idCanvas");
 var pincel = canvas.getContext("2d");
-let canvasWidth = 700
+let canvasWidth = 600
 canvas.width = canvasWidth;
-let canvasHeight = 500;
+let canvasHeight = 400;
 canvas.height = canvasHeight;
 
 //ValorES da bolinha x e y
-let bolinhaX = 250;
-let bolinhaY = 250;
+let bolinhaX = canvasWidth/2;
+let bolinhaY = canvasHeight/2;
 let raioBola = 5;
 let velocidadeBolinha = 5;
 let bolinhaReto = false;
@@ -26,7 +26,7 @@ let bolinhaParaCima = true; //se vai decrementando ou diminuindo Eixo Y
 let larguraRaquete1 = 10;
 let alturaRaquete1 = 100;
 let xRaquete = 15; //CORDENADAS DA RAQUETE
-let yRaquete = 200;
+let yRaquete = (canvasHeight / 2 )- 50;
 
 //raquete 2
 let xRaquete2 = canvasWidth -25 ;
@@ -66,19 +66,19 @@ function desenharCampo() {
   //Meio do campo
   pincel.fillStyle = 'green';
   pincel.beginPath();
-  pincel.rect(245, 0, 10, canvasWidth);
+  pincel.rect((canvasWidth/2) - 5, 0, 10, canvasWidth);
   pincel.fill();
 
   //Meio campo bola
   pincel.fillStyle = 'green';
   pincel.beginPath();
-  pincel.arc(250, 250, 40, 0, 2 * Math.PI);
+  pincel.arc(canvasWidth/2, canvasHeight/2, 40, 0, 2 * Math.PI);
   pincel.fill();
 
   //Meio campo bola2
   pincel.fillStyle = 'white';
   pincel.beginPath();
-  pincel.arc(250, 250, 10, 0, 2 * Math.PI);
+  pincel.arc(canvasWidth/2, canvasHeight/2, 10, 0, 2 * Math.PI);
   pincel.fill();
 
 
@@ -292,8 +292,8 @@ function verificarGol() {
 }
 function criarPlacar() {
   pincel.font = '48px serif';
-  pincel.fillText(pontoA, 200, 50);
-  pincel.fillText(pontoB, 275, 50);
+  pincel.fillText(pontoA, (canvasWidth/2) + 50, 50);
+  pincel.fillText(pontoB, (canvasWidth/2) - 50, 50);
   pincel.fill();
 }
 function atualizarTelar() {
@@ -315,14 +315,14 @@ function atualizadHoras() {
   pincel.font = '30px serif';
   pincel.fontColor = "blue";
   let agora = new Date();
-  let hora = agora.getHours();
-  let minutos = agora.getUTCMinutes();
-  let segundos = agora.getUTCSeconds();
+  let hora = agora.getHours().toString().padStart(2, '0');
+  let minutos = agora.getUTCMinutes().toString().padStart(2, '0');
+  let segundos = agora.getUTCSeconds().toString().padStart(2, '0');
 
 
-  pincel.fillText(hora + ":", 380, 50);
-  pincel.fillText(minutos + ":", 420, 50);
-  pincel.fillText(segundos + "", 460, 50);
+  pincel.fillText(hora + ":", canvasWidth - 120, 50);
+  pincel.fillText(minutos + ":", canvasWidth - 80, 50);
+  pincel.fillText(segundos + "", canvasWidth - 40, 50);
   pincel.fill();
 }
 function leDoTeclado(evento) {
