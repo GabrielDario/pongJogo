@@ -1,12 +1,16 @@
 // Criando componente Canvas para dsenhos em 2D
 let canvas = document.querySelector("#idCanvas");
 var pincel = canvas.getContext("2d");
+let canvasWidth = 700
+canvas.width = canvasWidth;
+let canvasHeight = 500;
+canvas.height = canvasHeight;
 
 //ValorES da bolinha x e y
 let bolinhaX = 250;
 let bolinhaY = 250;
 let raioBola = 5;
-let velocidadeBolinha = 1;
+let velocidadeBolinha = 5;
 let bolinhaReto = false;
 
 // placar
@@ -25,8 +29,8 @@ let xRaquete = 15; //CORDENADAS DA RAQUETE
 let yRaquete = 200;
 
 //raquete 2
-let xRaquete2 = 475;
-let yRaquete2 = 300;
+let xRaquete2 = canvasWidth -25 ;
+let yRaquete2 = (canvasHeight / 2 )- 50;
 
 let taxa = 10; //valocidade da raquete
 
@@ -44,8 +48,8 @@ let game = new Audio('sons/game.wav');
 
 function limparTela() {
   var descer = 0;
-  while (descer <= 500) {
-    for (var imp = 0; imp <= 500; imp = imp + 25) {
+  while (descer <= canvasHeight) {
+    for (var imp = 0; imp <= canvasWidth; imp = imp + 25) {
       pincel.fillStyle = "black";
       pincel.strokeStyle = "blue";
       pincel.beginPath();
@@ -62,7 +66,7 @@ function desenharCampo() {
   //Meio do campo
   pincel.fillStyle = 'green';
   pincel.beginPath();
-  pincel.rect(245, 0, 10, 500);
+  pincel.rect(245, 0, 10, canvasWidth);
   pincel.fill();
 
   //Meio campo bola
@@ -89,7 +93,7 @@ function desenharCirculo() {
   // EIXO X
   //Verifica colisão no eixo X - entre 0 e 500
 
-  if (bolinhaX >= 500) {
+  if (bolinhaX >= canvasWidth) {
     bolinhaParaFrente = false;
   }
   if (bolinhaX <= 0) {
@@ -115,7 +119,7 @@ function desenharCirculo() {
   }
   // EIXO Y
   //Verifica colisão no eixo Y - entre 0 e 500
-  if (bolinhaY >= 500) {
+  if (bolinhaY >= canvasHeight) {
     bolinhaParaCima = false;
   }
   if (bolinhaY <= 0) {
@@ -143,6 +147,17 @@ function desenharRaquete1(larguraRaquete1, alturaRaquete1, xRaquete, yRaquete) {
   pincel.beginPath();
   pincel.rect(xRaquete, yRaquete, larguraRaquete1, alturaRaquete1);
   pincel.fill();
+
+  pincel.beginPath();
+  pincel.fillStyle = 'red';
+  pincel.rect(xRaquete, yRaquete, 10, 10);
+  pincel.rect(xRaquete, yRaquete + 100, 10, 10);
+  pincel.fill();
+
+  pincel.beginPath();
+  pincel.fillStyle = 'blue';
+  pincel.rect(xRaquete, yRaquete + 50, 10, 10);
+  pincel.fill();
 }
 // função a raquete direita
 function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2) {
@@ -150,6 +165,17 @@ function desenharRaquete2(larguraRaquete1, alturaRaquete1, xRaquete2, yRaquete2)
   pincel.fillStyle = 'white';
   pincel.beginPath();
   pincel.rect(xRaquete2, yRaquete2, larguraRaquete1, alturaRaquete1);
+  pincel.fill();
+
+  pincel.beginPath();
+  pincel.fillStyle = 'red';
+  pincel.rect(xRaquete2, yRaquete2, 10, 10);
+  pincel.rect(xRaquete2, yRaquete2 + 100, 10, 10);
+  pincel.fill();
+
+  pincel.beginPath();
+  pincel.fillStyle = 'blue';
+  pincel.rect(xRaquete2, yRaquete2 + 50, 10, 10);
   pincel.fill();
 }
 function verificarColisaoRaquete1() {
@@ -257,7 +283,7 @@ function verificarGol() {
     bolinhaReto = false;
     pontoB = pontoB + 1;
   }
-  if (bolinhaX >= 500) {
+  if (bolinhaX >= canvasWidth) {
     gol.play();
     velocidadeBolinha = 5;
     bolinhaReto = false;
