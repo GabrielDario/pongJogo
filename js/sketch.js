@@ -44,12 +44,20 @@ var baixo = 40;
 var w = 87;
 var s = 83;
 
+//bonus
+let bonusX;
+let bonusY;
+let bonusAltura = 25;
+let bonusLargura = 25;
+
+
 // Sons
 let rebater = new Audio('sons/rebater.wav');
 let gol = new Audio('sons/goal.wav');
 let game = new Audio('sons/game.wav');
 // função que desenha o grid.
 
+let bonus = false; //Para ativar um bonus
 function limparTela() {
   var descer = 0;
   while (descer <= canvasHeight) {
@@ -112,14 +120,13 @@ function desenharCirculo() {
     bolinhaX = bolinhaX - velocidadeBolinha;
   }
   if (bolinhaReto == true && bolinhaParaFrente == false) {
-    console.log("RETO COM com direita")
-    bolinhaX = bolinhaX - velocidadeBolinha;
+    console.log("RETO COM com direita");
+    bolinhaX = bolinhaX - (velocidadeBolinha * multiplicador)
 
   }
   if (bolinhaReto == true && bolinhaParaFrente == true) {
     console.log("RETO da esquerda")
-    bolinhaX = bolinhaX + velocidadeBolinha;
-
+    bolinhaX = bolinhaX + (velocidadeBolinha * multiplicador)
   }
   // EIXO Y
   //Verifica colisão no eixo Y - entre 0 e 500
@@ -186,7 +193,7 @@ function verificarColisaoRaquete1() {
 
   if (bolinhaX >= 30 && bolinhaX <= 40) { //bolinha na raquete 1
     diferenca = bolinhaY - yRaquete;
-    console.log(diferenca)
+
     if (bolinhaY + 105 >= yRaquete && diferenca >= -15 && diferenca <= alturaRaquete1 + 15) {
       rebater.play();
 
@@ -216,11 +223,11 @@ function verificarAngulo1() {
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
     bolinhaReto = false;
-    console.log("x2");
+
     multiplicadorTela = multiplicadorTela + 1;
 
     multiplicador = multiplicador + 0.2;
-    console.log(`Multuiplicador de ${multiplicador}`);
+
   } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
@@ -234,8 +241,8 @@ function verificarAngulo1() {
     bolinhaParaCima = true;
     bolinhaReto = true;
     console.log("Retoo!!");
-    multiplicadorTela = 1;
-
+    multiplicadorTela = multiplicadorTela + 1;
+    multiplicador = multiplicador + 0.2;
   } else if (diferenca > 63 && diferenca <= 89) {// regula velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
@@ -247,12 +254,12 @@ function verificarAngulo1() {
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
     bolinhaReto = false;
-    console.log("x2");
+
     multiplicadorTela = multiplicadorTela + 1;
 
     multiplicador = multiplicador + 0.2;
-    console.log(`Multuiplicador de ${multiplicador}`);
-    
+
+
   }
   console.log(`VELOCIDADE ${multiplicadorTela} =  ` + velocidadeBolinha);
 }
@@ -267,9 +274,9 @@ function verificarAngulo2() {
     multiplicadorTela = multiplicadorTela + 1;
 
     multiplicador = multiplicador + 0.2;
-    console.log(`Multuiplicador de ${multiplicador}`);
+
     velocidadeBolinha = velocidadeBolinha * multiplicador;
-  
+
     bolinhaReto = false;
   } else if (diferenca > 11 && diferenca <= 37) { // regula velocidade
     bolinhaParaFrente = false;
@@ -283,6 +290,8 @@ function verificarAngulo2() {
     bolinhaParaFrente = false;
     bolinhaParaCima = true;
     bolinhaReto = true;
+    multiplicadorTela = multiplicadorTela + 1;
+    multiplicador = multiplicador + 0.2;
     console.log("Retoo!!");
 
   } else if (diferenca > 63 && diferenca <= 89) {// regula velocidade
@@ -298,13 +307,13 @@ function verificarAngulo2() {
     bolinhaParaCima = true;
     bolinhaReto = false;
     velocidadeBolinha = velocidadeBolinha * multiplicador;
-   console.log("x2");
+
     multiplicadorTela = multiplicadorTela + 1;
 
     multiplicador = multiplicador + 0.2;
-    console.log(`Multuiplicador de ${multiplicador}`);
+
   }
-  console.log(`VELOCIDADE ${multiplicadorTela} =  ` + velocidadeBolinha);
+
 }
 
 function verificarGol() {
@@ -358,12 +367,46 @@ function verificarMultiplicador() {
 }
 
 
-function teste() {
-  //console.log("BONUS");
+function criandoBonus() {
+  console.log("Convertendo bonus para true");
+  bonus = true;
+
+  bonusX = (canvasWidth / 5);
+  bonusX = Math.floor(Math.random() * bonusX);
+  bonusX = bonusX * 5;
+
+
+  bonusY = (canvasHeight / 5);
+  bonusY = Math.floor(Math.random() * bonusY);
+  bonusY = bonusY * 5;
+}
+
+function verificarBonus() {
+  if (bonus == true) {
+    pincel.beginPath();
+    pincel.fillStyle = 'red';
+    pincel.rect(bonusX, bonusY, bonusAltura, bonusLargura);
+    pincel.fill();
+  }
+}
+function bonusCrescendo() {
+  console.log("Cresceu");
+  bonusAltura = bonusAltura + velocidadeBolinha;
+  bonusLargura = bonusLargura + velocidadeBolinha ;
+}
+function verificarColisaoBonus() {
+  console.log(`Bonus - ${bolinhaX} e ${bonusY}`)
+  if (bolinhaX >= bonusX && bolinhaX <= bonusX + bonusLargura) { // indo para direita
+
+    if(bolinhaY >= bonusY && bolinhaY <= bonusY + bonusLargura) {
+      alert("Colidiu X E Y");
+  
+    }
+  }
 }
 
 function leDoTeclado(evento) {
-  game.play();
+  //game.play();
   if (evento.keyCode == cima && yRaquete2 - taxa >= 0) {
     yRaquete2 = yRaquete2 - taxa;
 
@@ -375,8 +418,7 @@ function leDoTeclado(evento) {
     yRaquete = yRaquete - taxa;
 
   } else if (evento.keyCode == s && canvasHeight <= 400 && yRaquete <= 290) {
-    console.log(yRaquete);
-    //console.log(taxa);
+
     yRaquete = yRaquete + taxa;
 
   }
@@ -396,12 +438,17 @@ function atualizarTelar() {
   verificarGol();
   atualizadHoras();
   verificarMultiplicador();
+  verificarBonus();
+  verificarColisaoBonus();
 }
 
 document.onkeydown = leDoTeclado;
 
-setInterval(atualizarTelar, 50);;
-setInterval(teste, 10000); // bonus a cada 10 segundos
+setInterval(atualizarTelar, 50);
+setInterval(criandoBonus, 3000);
+setInterval(bonusCrescendo, 6000); // bonus a cada 10 segundos
+// BONUS = FALSE PARA TIRAR
+
 
 
 
