@@ -13,9 +13,6 @@ let raioBola = 5;
 let velocidadeBolinha = 5;
 let bolinhaReto = false;
 
-let bolinhafalsaX;
-let bolinhafalsaY;
-let bolinhaFalsa = false;
 
 // Placar
 let pontoA = 0;
@@ -57,12 +54,20 @@ let bonusAltura = 25;
 let bonusLargura = 25;
 let nomeBonus = "Último Bônus - "
 
+let bolinhafalsaX;
+let bolinhafalsaY;
+let bolinhaFalsa = false;
+let hadoken = false;
+
+let xHadoken = 0;
+let yHadoken = 0;
+let larguraHadoken = 0;
+let alturaHadoken = 0;
+
 // Sons
 let rebater = new Audio('sons/rebater.wav');
 let gol = new Audio('sons/goal.wav');
-let game = new Audio('sons/game.mp3');
-
-let aFlat = new Audio('sons/a-flat.mp3');
+let game = new Audio('sons/game.mp3'); let aFlat = new Audio('sons/a-flat.mp3');
 let a = new Audio('sons/a.mp3');
 let bFlat = new Audio('sons/b-flat.mp3');
 let c = new Audio('sons/c.mp3');
@@ -525,12 +530,59 @@ function verificarBolinhaFalsa() {
     pincel.fill();
   }
 
-  if(bolinhafalsaX > canvasWidth || bolinhafalsaX < 0) {
+  if (bolinhafalsaX > canvasWidth || bolinhafalsaX < 0) {
     bolinhaFalsa = false;
   }
- 
+
+  //Verificar o pode hadoken
+  if (hadoken == true) {
+    pincel.beginPath();
+    pincel.fillStyle = 'blue';
+
+    if (bolinhaParaFrente == true) { // Se estiver indo pro lado direito
+
+      larguraHadoken = larguraHadoken + velocidadeBolinha ; // vai aumentando...(velocidadeBolinha * 3)
+      alturaHadoken = alturaHadoken + velocidadeBolinha;
+      if (alturaHadoken >= 100) {
+        alturaHadoken = 100;
+      }
+      if (larguraHadoken >= canvasWidth) {// até a largura maxima
+        larguraHadoken = canvasWidth;
+      }
+
+    } else {
+
+      larguraHadoken = larguraHadoken - velocidadeBolinha;
+      alturaHadoken = alturaHadoken + velocidadeBolinha;
+
+      if (larguraHadoken <= 0 - (canvasWidth / 2)) {
+        larguraHadoken = 0 - (canvasWidth / 2);
+      }
+
+      if (alturaHadoken >= 100) {
+        alturaHadoken = 100;
+      }
+
+
+    }
+
+    pincel.rect(canvasWidth / 2, canvasHeight * 0.375, larguraHadoken, alturaHadoken);
+    pincel.fill();
+    verificandoColisaoHadoken();
+    //Verificar colisão
+  }
+
 }
 
+function verificandoColisaoHadoken() {
+  console.log(`${yRaquete} ${yRaquete2} ${larguraHadoken} `)
+
+  if(larguraHadoken >= 280 ) { // Hadoken quando escostar na reta da régua
+    alert(`${alturaHadoken}`);
+
+   // if(yRaquete2 + alturaRaquete2) 
+  }
+}
 function atualizarBonus() {
 
   pincel.beginPath();
