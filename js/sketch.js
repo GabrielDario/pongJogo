@@ -462,7 +462,7 @@ function verificarColisaoBonus() {
 
 //Sortear qual 'Bonus' vai pegar'
 function sorterioDoBonus() {
-  let sorteioBonus = Math.floor(Math.random() * 6);
+  let sorteioBonus = Math.floor(Math.random() * 7);
 
   if (sorteioBonus == 0) { // Para inverter lado
     nomeBonus = "Último Bônus[1]: Inverter!";
@@ -475,7 +475,6 @@ function sorterioDoBonus() {
     } else {
       bolinhaX = bolinhaX - bonusLargura; //caso ao contrario,pula pra tras
     }
-
     velocidadeBolinha = velocidadeBolinha * multiplicador;
     multiplicadorTela = multiplicadorTela + 2;
     verificarSomVelocidade();
@@ -501,10 +500,13 @@ function sorterioDoBonus() {
   } else if (sorteioBonus == 5) {
     nomeBonus = "Último Bônus[5]: Bolinha Falsa";
     bolinhaFalsa = true;
+  } else if (sorteioBonus == 6) {
+    nomeBonus = "Último Bônus[6]: Poder!";
+    hadoken = true;
   }
 }
 
-function verificarBolinhaFalsa() {
+function verificarBonusBolinhaEpoder() {
   if (bolinhaFalsa == true) {
     pincel.fillStyle = 'white';
     pincel.beginPath();
@@ -541,7 +543,7 @@ function verificarBolinhaFalsa() {
 
     if (bolinhaParaFrente == true) { // Se estiver indo pro lado direito
 
-      larguraHadoken = larguraHadoken + velocidadeBolinha ; // vai aumentando...(velocidadeBolinha * 3)
+      larguraHadoken = larguraHadoken + velocidadeBolinha; // vai aumentando...(velocidadeBolinha * 3)
       alturaHadoken = alturaHadoken + velocidadeBolinha;
       if (alturaHadoken >= 100) {
         alturaHadoken = 100;
@@ -575,12 +577,32 @@ function verificarBolinhaFalsa() {
 }
 
 function verificandoColisaoHadoken() {
-  console.log(`${yRaquete} ${yRaquete2} ${larguraHadoken} `)
-
-  if(larguraHadoken >= 280 ) { // Hadoken quando escostar na reta da régua
-    alert(`${alturaHadoken}`);
-
-   // if(yRaquete2 + alturaRaquete2) 
+ 
+  if (larguraHadoken >= 280) { // Hadoken quando escostar na reta da régua
+    
+    if (yRaquete2 + alturaRaquete2 > canvasHeight * 0.375 && yRaquete2 < (canvasHeight * 0.375) + 100) {
+      hadoken = false;
+      larguraHadoken = 0;
+      alturaHadoken = 0;
+      velocidadeBolinha = 5;
+      multiplicadorTela = 1;
+      multiplicador = 1.25;
+      bolinhaReto = false;
+      pontoA = pontoA + 1;
+    }
+  }
+  if(larguraHadoken <= - 280) {
+ 
+    if (yRaquete + alturaRaquete1 > canvasHeight * 0.375 && yRaquete < (canvasHeight * 0.375) + 100) {
+      hadoken = false;
+      larguraHadoken = 0;
+      alturaHadoken = 0;
+      velocidadeBolinha = 5;
+      multiplicadorTela = 1;
+      multiplicador = 1.25;
+      bolinhaReto = false;
+      pontoB = pontoB  + 1;
+    }
   }
 }
 function atualizarBonus() {
@@ -627,7 +649,7 @@ function atualizarTelar() {
   verificarBonus();
   verificarColisaoBonus();
   atualizarBonus();
-  verificarBolinhaFalsa();
+  verificarBonusBolinhaEpoder();
 }
 
 document.onkeydown = leDoTeclado;
