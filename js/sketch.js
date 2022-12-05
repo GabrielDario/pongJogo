@@ -94,6 +94,7 @@ function limparTela() {
   }
 }
 
+//Desenha as linhas do campo
 function desenharCampo() {
   //Meio do campo
   pincel.fillStyle = 'green';
@@ -137,12 +138,10 @@ function desenharCirculo() {
     bolinhaX = bolinhaX - velocidadeBolinha;
   }
   if (bolinhaReto == true && bolinhaParaFrente == false) {
-    console.log("RETO COM com direita");
     bolinhaX = bolinhaX - (velocidadeBolinha * multiplicador)
 
   }
   if (bolinhaReto == true && bolinhaParaFrente == true) {
-    console.log("RETO da esquerda")
     bolinhaX = bolinhaX + (velocidadeBolinha * multiplicador)
   }
   // EIXO Y
@@ -235,8 +234,6 @@ function verificarColisaoRaquete2() {
 //se pegar mais pra cima da raquete,bola vai para cima (primeiros 75 pixels)
 //se pegar mais pra cima da raquete,bola vai para cima (dos 76 pixels até o 150 px)
 function verificarAngulo1() {
-
-  console.log("esquerda: " + diferenca);
   if (diferenca >= -15 && diferenca <= (alturaRaquete1 * 0.11)) {  // aumenta velocidade
     bolinhaParaFrente = true;
     bolinhaParaCima = false;
@@ -258,7 +255,6 @@ function verificarAngulo1() {
     bolinhaParaFrente = true;
     bolinhaParaCima = true;
     bolinhaReto = true;
-    console.log("Retoo!!");
     multiplicadorTela = multiplicadorTela + 1;
     multiplicador = multiplicador + 0.2;
     verificarSomVelocidade();
@@ -280,11 +276,11 @@ function verificarAngulo1() {
 
 
   }
-  console.log(`VELOCIDADE ${multiplicadorTela} =  ` + velocidadeBolinha);
-}
 
+}
+//Verificar angulo e sim com isso,direção da bola
 function verificarAngulo2() {
-  console.log("direita: " + diferenca);
+
   if (diferenca >= -15 && diferenca <= (alturaRaquete2 * 0.11)) {  // aumenta velocidade
     bolinhaParaFrente = false;
     bolinhaParaCima = false;
@@ -371,7 +367,8 @@ function verificarGol() {
     pontoA = pontoA + 1;
   }
 }
-function criarPlacar() {
+//Função para atualizar placa a todo momento
+function criarPlacar() { 
   pincel.font = '48px serif';
   pincel.fillStyle = "red";
   pincel.fillText(pontoB, (canvasWidth / 2) + 25, 50);
@@ -390,7 +387,7 @@ function criarPlacar() {
   }
 }
 
-function atualizadHoras() {
+function atualizarHoras() {
   pincel.font = '30px serif';
   pincel.fontColor = "blue";
   let agora = new Date();
@@ -442,16 +439,16 @@ function verificarBonus() {
 }
 //CRESCENDO CADA VEZ QUE NÃO PEGAR
 function bonusCrescendo() {
-  console.log("Cresceu");
+
   bonusAltura = bonusAltura + velocidadeBolinha;
   bonusLargura = bonusLargura + velocidadeBolinha;
 }
 //VE SE A BOLINHA PEGAR NO BONUS
 function verificarColisaoBonus() {
 
-  if (bolinhaX >= bonusX && bolinhaX <= bonusX + bonusLargura) { // indo para direita
-
-    if (bolinhaY >= bonusY && bolinhaY <= bonusY + bonusLargura) {
+  if (bolinhaX >= bonusX && bolinhaX <= bonusX + bonusLargura) { // SE AS CORDENADAS DAS BOLINHAS
+                                                              //X FOR IGUAL DO BONUS
+    if (bolinhaY >= bonusY && bolinhaY <= bonusY + bonusLargura) {//VERIFICA X + LARGURA BONUS 
       bonusSom.play();
       bonusAltura = 25;
       bonusLargura = 25;
@@ -459,7 +456,6 @@ function verificarColisaoBonus() {
     }
   }
 }
-
 
 //Sortear qual 'Bonus' vai pegar'
 function sorterioDoBonus() {
@@ -508,6 +504,7 @@ function sorterioDoBonus() {
 }
 
 function verificarBonusBolinhaEpoder() {
+  //VERIFICAR BOLINHA FALSA
   if (bolinhaFalsa == true) {
     pincel.fillStyle = 'white';
     pincel.beginPath();
@@ -537,7 +534,7 @@ function verificarBonusBolinhaEpoder() {
     bolinhaFalsa = false;
   }
 
-  //Verificar o pode hadoken
+    //VERIFICAR O PODER HADOKEN
   if (hadoken == true) {
     pincel.beginPath();
     pincel.fillStyle = 'blue';
@@ -565,10 +562,7 @@ function verificarBonusBolinhaEpoder() {
       if (alturaHadoken >= 100) {
         alturaHadoken = 100;
       }
-
-
     }
-
     pincel.rect(canvasWidth / 2, canvasHeight * 0.375, larguraHadoken, alturaHadoken);
     pincel.fill();
     verificandoColisaoHadoken();
@@ -576,7 +570,7 @@ function verificarBonusBolinhaEpoder() {
   }
 
 }
-
+//Se colidir o poderes no X das raquetes...
 function verificandoColisaoHadoken() {
 
   if (larguraHadoken >= 280) { // Hadoken quando escostar na reta da régua
@@ -609,14 +603,15 @@ function verificandoColisaoHadoken() {
     }
   }
 }
+//Atualizando qual o último bônus foi pego
 function atualizarBonus() {
-
   pincel.beginPath();
   pincel.font = '20px serif';
   pincel.fillStyle = 'yellow';
   pincel.fillText(`${nomeBonus}`, canvasWidth - 250, 100);
   pincel.fill();
 }
+//Funções para ler teclado 
 function leDoTeclado(evento) {
   game.play();
   if (evento.keyCode == cima && yRaquete2 - taxa >= - 150) {
@@ -635,9 +630,8 @@ function leDoTeclado(evento) {
 
   }
 }
-
+//Função que vai verificar as funções a serem atualizadas a todo momento
 function atualizarTelar() {
-
   limparTela();
   desenharCampo();
   desenharCirculo();
@@ -648,7 +642,7 @@ function atualizarTelar() {
   verificarColisaoRaquete2();
   criarPlacar();
   verificarGol();
-  atualizadHoras();
+  atualizarHoras();
   verificarMultiplicador();
   verificarBonus();
   verificarColisaoBonus();
@@ -660,7 +654,7 @@ document.onkeydown = leDoTeclado;
 
 setInterval(atualizarTelar, 50);
 setInterval(criandoBonus, 3000);
-setInterval(bonusCrescendo, 6000); // bonus a cada 10 segundos
+setInterval(bonusCrescendo, 6000); // bonus crescendo a cada 10 segundos caso não for pega
 // BONUS = FALSE PARA TIRAR
 
 
