@@ -374,18 +374,19 @@ function verificarGol() {
 function criarPlacar() {
   pincel.font = '48px serif';
   pincel.fillStyle = "red";
-  pincel.fillText(pontoA, (canvasWidth / 2) + 25, 50);
-  pincel.fillText(pontoB, (canvasWidth / 2) - 50, 50);
+  pincel.fillText(pontoB, (canvasWidth / 2) + 25, 50);
+  pincel.fillText(pontoA, (canvasWidth / 2) - 50, 50);
   pincel.fill();
 
   if (pontoA == 10) {
     window.location.href = "index.html"
-    // alert("Jogador 1 GANHOU!");
-
+    alert("Jogador 1 GANHOU!");
+    pontoA = 0;
   }
   if (pontoB == 10) {
     window.location.href = "index.html"
-    //alert("Jogador 1 GANHOU!");
+    alert("Jogador 2 GANHOU!");
+    pontoB = 0;
   }
 }
 
@@ -577,9 +578,9 @@ function verificarBonusBolinhaEpoder() {
 }
 
 function verificandoColisaoHadoken() {
- 
+
   if (larguraHadoken >= 280) { // Hadoken quando escostar na reta da régua
-    
+
     if (yRaquete2 + alturaRaquete2 > canvasHeight * 0.375 && yRaquete2 < (canvasHeight * 0.375) + 100) {
       hadoken = false;
       larguraHadoken = 0;
@@ -589,11 +590,13 @@ function verificandoColisaoHadoken() {
       multiplicador = 1.25;
       bolinhaReto = false;
       pontoA = pontoA + 1;
+      gol.play();
     }
   }
-  if(larguraHadoken <= - 280) {
- 
+  if (larguraHadoken <= - 280) {
+
     if (yRaquete + alturaRaquete1 > canvasHeight * 0.375 && yRaquete < (canvasHeight * 0.375) + 100) {
+      gol.play();
       hadoken = false;
       larguraHadoken = 0;
       alturaHadoken = 0;
@@ -601,7 +604,8 @@ function verificandoColisaoHadoken() {
       multiplicadorTela = 1;
       multiplicador = 1.25;
       bolinhaReto = false;
-      pontoB = pontoB  + 1;
+      pontoB = pontoB + 1;
+      gol.play();
     }
   }
 }
